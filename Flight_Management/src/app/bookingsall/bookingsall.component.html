@@ -1,0 +1,99 @@
+<div class="row g-3 py-4">
+    <h2 style="text-align: center;">All Booked Tickets History</h2>
+      </div>
+
+<form class="row g-3">
+  <div class="col-md-4">
+    <label class="form-label">Airline</label>
+    <select [(ngModel)]="airlineSelected" [ngModelOptions]="{standalone: true}" class="form-select">
+      <option *ngFor="let airline of airlines" [ngValue]="airline">{{airline.value}}</option>
+    </select>
+  </div>
+  <div></div>
+    <div class="col-md-6">
+      <label class="form-label">Source</label>
+      <select [(ngModel)]="sourceLocationSelected" [ngModelOptions]="{standalone: true}" class="form-select">
+        <option *ngFor="let location of locations" [ngValue]="location">{{location.value}}</option>
+      </select>
+    </div>
+    <div class="col-md-6">
+      <label class="form-label">Destination</label>
+      <select [(ngModel)]="destinationLocationSelected" [ngModelOptions]="{standalone: true}" class="form-select">
+        <option *ngFor="let location of locations" [ngValue]="location">{{location.value}}</option>
+      </select>
+    </div>
+    <div></div>
+    <div class="col-md-2">
+      <label class="form-label">Travel Date</label>
+      <input type="date" name="scheduleDate" [(ngModel)]="allBookedTicketsRequest.travelDate" class="form-control">
+    </div>
+    <div></div>
+    <div class="col-md-2">
+      <button type="submit" (click)="SearchTickets()" class="btn btn-success" >{{"Search Tickets"}}</button>
+  </div>
+</form>
+
+<div *ngIf="isShowNoResultFound">
+  <h1 style="text-align: center;">No Bookings found</h1>
+</div>
+
+<div *ngIf="bookingHistory.length > 0">
+  <h1 style="text-align: center;">Booking Search Results</h1>
+</div>
+<div class="py-1"></div>
+
+<div class="table-wrapper" *ngIf="bookingHistory.length > 0">
+  <table class="table caption-top table-dark table-striped table-hover">
+      <thead>
+          <tr>
+              <th>Airline Logo</th>
+              <th>Customer Name</th>
+              <th>Travel Date</th>
+              <th>PNR Number</th>
+              <th>Actions</th>
+          </tr>
+      </thead>
+      <tbody>
+          <tr *ngFor="let booking of bookingHistory">
+              <td><img style="width: 122px;height: 70px;" src={{booking.airlineLogo}}></td>
+              <td><div style="width: 100px;" class="text-truncate py-4" title="{{booking.customerName}}">{{booking.customerName}}</div></td>
+              <td><div style="width: 130px;" class="text-truncate py-4" title ="{{booking.travellingDate | date}}">{{booking.travellingDate | date}}</div></td>
+              <td><div style="width: 130px;" class="text-truncate py-4" title ="{{booking.pnrNumber}}">{{booking.pnrNumber}}</div></td>
+              <td><div class="py-4">
+                  <span><input type="button" class="btn btn-info" value="View Details" (click)="ViewTicketDetails(booking)"/></span>
+                  </div>
+                  </td>
+          </tr>
+      </tbody>
+  </table>
+</div>
+
+
+
+
+<div *ngIf="showSpinner" class="loader" role="status">
+    <span class="visually-hidden">Loading</span>
+  </div>
+
+
+<!-- Button trigger modal -->
+<button id="btnLaunchModal" type="button" style="visibility: hidden;" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+</button>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header">
+          <h5 class="modal-title">{{modalHeader}}</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+       <label style="font-family: 'Courier New', Courier, monospace;" [innerText]="modalText"></label>  
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+  </div>
